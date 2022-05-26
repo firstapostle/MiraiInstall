@@ -1,3 +1,9 @@
+Нам понадобится два VPS KVM сервера и домен. Виртуализация именно KVM, OpenVZ мимо в этот раз.
+На одном сервере будем ставить сам ботнет, на втором будем сканировать ботов. ( брутить )
+ВАЖНО. Сервера должны быть на базе Debian 8, и иметь как минимум 1GB RAM.
+
+
+
 # apt-get update -y
 # apt-get upgrade -y
 # apt-get install unzip gcc golang electric-fence screen sudo git -y
